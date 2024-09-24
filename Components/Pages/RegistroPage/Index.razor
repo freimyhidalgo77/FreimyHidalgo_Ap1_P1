@@ -1,0 +1,71 @@
+﻿@page "/Registro/Index"
+@rendermode InteractiveServer
+@inject RegistroService registroService
+@inject NavigationManager navigation
+
+
+
+<PageTitle>Registro</PageTitle>
+  <div class=container> 
+	  <div class="card shadow-lg">
+		<div class="card-header bg-danger text-white text-center">
+			<h4><strong>Registro</strong></h4>
+	  </div>
+	  <div class="card-body">
+
+			<div class="col-md-3 d-flex align-items-end justify-content-md-end mt-3 mt-md-0">
+				<a href="/Registro/Create" class="btn btn-success bi bi-plus-square-fill"> Crear</a>
+			</div>
+		</div>
+
+		  <div class="card-body">
+		<table class="table table-light table-bordered">
+			<thead class="table table-striped text-center table-bordered mt-3 bg-danger text-white">
+				<tr>
+					
+					<th>Ver</th>
+					<th>Editar</th>
+					<th>Eliminar</th>
+				</tr>
+			</thead>
+
+			<tbody>
+
+					@foreach (var Registro in registro )  
+					{
+
+						<tr>
+							@*Iconos y botones*@
+							<td class="text-center">
+								<a href="/Registro/Details/" class="btn btn-outline-info  bi bi-eye"></a>
+							</td>
+							<td class="text-center">
+								<a href="/Registro/Edit/" class="btn btn-outline-warning  bi bi-pencil-square"></a>
+							</td>
+							<td class="text-center">
+								<a href="/Registro/Delete/" class="btn btn-outline-danger bi bi-trash"></a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+
+
+
+@code {
+
+	public List<Registro> registro = new List<Registro>();
+
+
+
+	
+
+}
