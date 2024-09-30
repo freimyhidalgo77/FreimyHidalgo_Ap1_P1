@@ -18,6 +18,7 @@ namespace FreimyHidalgo_Ap1_P1.Models
 
 		[Required(ErrorMessage = "Campo deudor obligatorio")]
 
+		
 		public string deudor { get; set; }
 
 
@@ -25,7 +26,7 @@ namespace FreimyHidalgo_Ap1_P1.Models
 
 		public decimal  monto { get; set; }
 
-
+		   
 		  
 
 	}

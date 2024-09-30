@@ -11,7 +11,7 @@ namespace FreimyHidalgo_Ap1_P1.DAL
 		{ 
 		}
 
-		public DbSet<Registro> Regitro { get; set; }
+		public DbSet<Prestamos> Prestamos { get; set; }
 	}
 }
-           
+             
