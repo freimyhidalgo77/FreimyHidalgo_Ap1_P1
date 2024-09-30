@@ -1,10 +1,20 @@
 using FreimyHidalgo_Ap1_P1.Components;
+using FreimyHidalgo_Ap1_P1.DAL;
+using FreimyHidalgo_Ap1_P1.Service;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+//Inyeccion de la DB
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
+builder.Services.AddDbContext<Context>(c => c.UseSqlite(ConStr));
+
+//Inyeccion del service
+builder.Services.AddScoped<PrestamoService>();
 
 var app = builder.Build();
 
@@ -25,3 +35,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+  
