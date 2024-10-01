@@ -1,0 +1,47 @@
+﻿@page "/Registro/Edit/{PrestamoId:int}"
+@rendermode InteractiveServer
+@inject PrestamoService prestamoService
+@inject NavigationManager navigation
+
+
+ 
+
+
+@code {
+
+	[Parameter]
+	public int PrestamoId { get; set; }
+	public Prestamos prestamos { get; set; } = new Prestamos();
+	public List<Prestamos> prestamosList { get; set; } = new List<Prestamos>();
+	public bool Repetido;
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		if(PrestamoId > 0)
+		{
+			prestamos = await prestamoService.Buscar(PrestamoId);
+
+		}
+		prestamosList = await prestamoService.Listar(prestamos => true);
+	}
+
+
+	public async Task<bool> Validar()
+	{
+		var existePrestamo = await prestamoService.Buscar(prestamos.PrestamoId);
+		Repetido = existePrestamo == null;
+		return Repetido;
+	}
+
+
+	public async Task Modificar()
+	{
+		if(!await Validar())
+		{
+			await prestamoService.Guardar(prestamos);
+			prestamos = new Prestamos();
+
+		}
+	}
+}
