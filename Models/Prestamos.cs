@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FreimyHidalgo_Ap1_P1.Models
 
 {
-	public class Prestamos
+	public class Prestamos 
 	{
 
 		[Key]
@@ -25,6 +25,9 @@ namespace FreimyHidalgo_Ap1_P1.Models
 		[Required(ErrorMessage = "Campo monto obligatorio")]
 
 		public decimal  monto { get; set; }
+
+		[Required(ErrorMessage = "Campo monto obligatorio")]
+		public decimal Interes { get; set; }
 
 		   
 		  
