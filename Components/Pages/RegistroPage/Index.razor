@@ -20,7 +20,7 @@
 		<div class="col-md-3">
 			<label class="from-label" id="filtro"><strong>Filtrar por:</strong></label>
 			<InputSelect for="filtro" class="form-select" @bind-Value="filtro">
-				<option value="Prestamo ID">Prestamo ID</option>
+				<option value="PrestamoID">Prestamo ID</option>
 				<option value="Deudor">Deudor</option>
 				<option value="Concepto">Concepto</option>
 				<option value="Monto">Monto</option>
@@ -54,7 +54,7 @@
 
 					@foreach (var prestamo in prestamos )  
 					{
-
+						 
 						<tr>
 
 							<td class="text-center">@prestamo.PrestamoId</td>
@@ -102,7 +102,11 @@
 		{
 		if (!string.IsNullOrWhiteSpace(valorFiltro))
 			{
-			if (filtro == "monto" && int.TryParse(valorFiltro, out int monto))
+			if (filtro == "PrestamoID" && int.TryParse(valorFiltro, out int prestamoid))
+			{
+				prestamos = await prestamoService.Listar(v => v.PrestamoId == prestamoid);
+			}
+			if (filtro == "Monto" && int.TryParse(valorFiltro, out int monto))
 				{
 				prestamos = await prestamoService.Listar(v => v.monto == monto);
 			}
