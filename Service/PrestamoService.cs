@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 
-/*Control alt l*/
 
 namespace FreimyHidalgo_Ap1_P1.Service
 {
@@ -61,15 +60,15 @@ namespace FreimyHidalgo_Ap1_P1.Service
 
 		public async Task<List<Prestamos>> Listar(Expression<Func<Prestamos, bool>> criterio)
 		{
-			return _context.Prestamos.AsNoTracking()
+			return  _context.Prestamos.AsNoTracking()
 				.Where(criterio)
 				.ToList(); 
 		}
-
-		public async Task<Prestamos> Buscar(int incentivo)
+		 
+		public async Task<Prestamos> Buscar(int id)
 		{
 			return _context.Prestamos.AsNoTracking()
-				.FirstOrDefault(p => p.Interes == incentivo);
+				.FirstOrDefault(p => p.PrestamoId == id);
 		}
 
 		public async Task<Prestamos?> ValidarDeudor(string deudor)
@@ -85,10 +84,10 @@ namespace FreimyHidalgo_Ap1_P1.Service
 
 		}
 
-		/*public decimal calcularInteresPrestamo(decimal )
+		public decimal calcularInteresPrestamo(decimal monto, decimal incentivo )
 		{
-			return 
-		}*/
+			return ((monto * incentivo / 100) + monto);
+		}
 
 
 
