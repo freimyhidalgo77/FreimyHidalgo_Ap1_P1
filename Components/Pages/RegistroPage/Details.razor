@@ -1,0 +1,79 @@
+﻿@page "/Prestamos/Details/{PrestamoId:int}"
+@rendermode InteractiveServer
+@inject PrestamoService prestamoService
+@inject NavigationManager navigation
+
+<PageTitle>Detalles del prestamo</PageTitle>
+
+	<div class="card shadow-lg">
+		<div class="card-header bg-primary text-white text-center">
+			<h3><strong>Detalles del prestamo seleccionado</strong></h3>
+		</div>
+		<div class="card-body">
+			<h6><strong>Aqui los detalles del prestamo seleccionado</strong></h6>
+		@if(prestamos != null)
+		{
+			<div class="mb-1">
+				<p class="mb-0"> Vehiculo ID: @prestamos.PrestamoId</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Marca: @prestamos.Concepto</p>
+			</div>
+			<div class="mb-1">
+				<p class="mb-0">Año: @prestamos.deudor</p>
+			</div>
+
+			
+		}
+		
+			<div class="card-footer">
+				<a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
+			</div>
+		</div>
+	</div>
+
+
+
+@code {
+
+	[Parameter]
+	public int PrestamoId { get; set; }
+	public Prestamos prestamos { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		prestamos = await (prestamoService.Buscar(PrestamoId));
+	}
+
+	
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
