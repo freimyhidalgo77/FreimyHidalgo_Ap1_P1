@@ -1,70 +1,57 @@
 ﻿@page "/Prestamos/Delete"
-@page "/Prestamos/Delete{PrestamoId:int}"
+@page "/Prestamos/Delete/{PrestamoId:int}"
 @rendermode InteractiveServer
 @inject PrestamoService prestamoService
 @inject NavigationManager navigation
 
 <PageTitle>Eliminar Prestamo</PageTitle>
-  <EditForm Model="prestamos" OnValidSubmit="EliminarPrestamo">
-	  <div class="container">
-		  <div class="card shadow-lg">
-			  <div class="card-header bg-danger text-white text-center">
-				  <h3><strong>Eliminar Prestamo</strong></h3>
+<EditForm Model="prestamos" OnValidSubmit="EliminarPrestamo">
 
-				  <div class="card-body">
-					  <h6>Esta seguro que desea eliminar el prestamo seleccionado</h6>
+    <div class="card shadow-lg">
+        <div class="card-header bg-danger text-white text-center">
+            <h3><strong>Eliminar Prestamo</strong></h3>
+        </div>
+        <div class="card-body">
+            <h6><strong>Estás seguro que deseas eliminar este prestamo?</strong></h6>
+            <div class="mb-1">
+                <p class="mb-0"> Prestamo ID: @prestamos.PrestamoId</p>
+            </div>
+            <div class="mb-1">
+                <p class="mb-0">Concepto: @prestamos.Concepto</p>
+            </div>
+            <div class="mb-1">
+                <p class="mb-0">Deudor: @prestamos.deudor</p>
+            </div>
 
-					  <div class="mb-1">
-						  <p class="/Prestamos/Index">Prestamo ID: @prestamos.PrestamoId </p>
-					  </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-danger bi bi-trash" @onclick="EliminarPrestamo"> Eliminar</button>
+                <a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
+            </div>
+        </div>
+    </div>
 
-					<div class="mb-1">
-						<p class="mb-0">Prestamo ID: @prestamos.Concepto </p>
-					</div>
-
-					<div class="mb-1">
-						<p class="mb-0">Prestamo ID: @prestamos.deudor </p>
-					</div>
-
-				    <div class="card-footer">
-						<button type="button" class="btn btn-danger bi bi-trash" @onclick="EliminarPrestamo"> Eliminar</button>
-					</div>
-
-				  </div>
-
-			  </div>
-		  </div>
-	  </div>
-
-  </EditForm> 
-
-
-
+</EditForm>
 
 @code {
+    [Parameter]
+    public int PrestamoId { get; set; }
+    public Prestamos prestamos { get; set; }
 
-	[Parameter]
-	public int PrestamoId { get; set; }
-	public Prestamos prestamos { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        prestamos = await prestamoService.Buscar(PrestamoId);
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
-		prestamos = await (prestamoService.Buscar(PrestamoId));
-	}
-
-	public async Task EliminarPrestamo()
-	{
-		var eliminado = await prestamoService.Buscar(prestamos.PrestamoId);
-		if(eliminado !=null)
-		{
-			Volver();
-
-		}
-	}
-
-	public void Volver()
-	{
-		navigation.NavigateTo("/Prestamos/Index");
-	}
-
+    public async Task EliminarPrestamo()
+    {
+        bool eliminado = await prestamoService.Eliminar(prestamos.PrestamoId);
+        if (eliminado)
+        {
+            navigation.NavigateTo("/Prestamos/Index");
+        }
+        else
+        {
+            // Handle error (e.g., show a message that the deletion failed)
+        }
+    }
 }
