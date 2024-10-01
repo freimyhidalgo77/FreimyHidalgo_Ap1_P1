@@ -1,4 +1,4 @@
-﻿@page "/Registro/Index"
+﻿@page "/Prestamos/Index"
 @rendermode InteractiveServer
 @inject PrestamoService prestamoService
 @inject NavigationManager navigation
@@ -13,6 +13,26 @@
 
 			<div class="col-md-3 d-flex align-items-end justify-content-md-start mt-3 mt-md-0">
 				<a href="/Prestamos/Create" class="btn btn-secondary bi bi-plus-square-fill"> Crear</a>
+			</div>
+		</div>
+
+	<div class="row text-right">
+		<div class="col-md-3">
+			<label class="from-label" id="filtro"><strong>Filtrar por:</strong></label>
+			<InputSelect for="filtro" class="form-select" @bind-Value="filtro">
+				<option value="Prestamo ID">Prestamo ID</option>
+				<option value="Deudor">Deudor</option>
+				<option value="Concepto">Concepto</option>
+				<option value="Monto">Monto</option>
+			</InputSelect>
+		</div>
+
+
+		<div class="col-md-6">
+			<label for="valorFiltro" class="form-label"><strong>B&uacute;squeda</strong></label>
+			<div class="input-group">
+				<InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeHolder="Buscar" />
+				@*@<button @onclick="Buscar" class="btn btn-outline-success bi bi-search" type="button"> Buscar</button>*@
 			</div>
 		</div>
 
@@ -37,7 +57,6 @@
 
 						<tr>
 
-
 							<td class="text-center">@prestamo.PrestamoId</td>
 							<td class="text-center">@prestamo.Concepto</td>
 							<td class="text-center">@prestamo.deudor</td>
@@ -45,13 +64,13 @@
 
 							@*Iconos y botones*@
 							<td class="text-center">
-								<a href="/Registro/Details/" class="btn btn-outline-info  bi bi-eye"></a>
+								<a href="/Prestamos/Details/" class="btn btn-outline-info  bi bi-eye"></a>
 							</td>
 							<td class="text-center">
-								<a href="/Registro/Edit/" class="btn btn-outline-warning  bi bi-pencil-square"></a>
+								<a href="/Prestamos/Edit/" class="btn btn-outline-warning  bi bi-pencil-square"></a>
 							</td>
 							<td class="text-center">
-								<a href="/Registro/Delete/" class="btn btn-outline-danger bi bi-trash"></a>
+								<a href="/Prestamos/Delete/" class="btn btn-outline-danger bi bi-trash"></a>
 							</td>
 						</tr>
 					}
@@ -60,10 +79,7 @@
 		</div>
 	</div>
 
-
-
-
-
+	</div>
 
 
 
@@ -71,9 +87,38 @@
 @code {
 
 	public List<Prestamos> prestamos = new List<Prestamos>();
+	public List<PrestamoService> prestamosService = new List<PrestamoService>();
+	public string filtro = "id";
+	public string valorFiltro = "";
 
 
+	protected override async Task OnInitializedAsync()
+	{
+		prestamos = await prestamoService.Listar(p => true);
+	}
 
-	
+	private async Task Buscar()
+		{
+		if (!string.IsNullOrWhiteSpace(valorFiltro))
+			{
+			if (filtro == "monto" && int.TryParse(valorFiltro, out int monto))
+				{
+				prestamos = await prestamoService.Listar(v => v.monto == monto);
+			}
+			else if (filtro == "Concepto")
+				{
+				prestamos = await prestamoService.Listar(v => v.Concepto.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase));
+			}
+			else if (filtro == "Deudor")
+				{
+				prestamos = await prestamoService.Listar(v => v.deudor.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase));
+			}
+			
+		}
+
+	}
+		
 
 }
+
+
