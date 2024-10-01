@@ -32,7 +32,7 @@
 			<label for="valorFiltro" class="form-label"><strong>B&uacute;squeda</strong></label>
 			<div class="input-group">
 				<InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeHolder="Buscar" />
-				@*@<button @onclick="Buscar" class="btn btn-outline-success bi bi-search" type="button"> Buscar</button>*@
+				 <button @onclick="Buscar" class="btn btn-outline-success bi bi-search" type="button"> Buscar</button>
 			</div>
 		</div>
 
@@ -43,8 +43,7 @@
 					<th>Prestamo ID</th>
 					<th>Concepto</th>
 					<th>Deudor</th>
-					<th>Monto</th>
-					<th>Ver</th>  
+					<th>Monto</th> 
 					<th>Editar</th> 
 					<th>Eliminar</th>
 				</tr>
@@ -62,15 +61,12 @@
 							<td class="text-center">@prestamo.deudor</td>
 							<td class="text-center">@prestamo.monto</td>
 
-							@*Iconos y botones*@
 							<td class="text-center">
-								<a href="/Prestamos/Details/" class="btn btn-outline-info  bi bi-eye"></a>
+								<a href="/Prestamos/Edit/@prestamo.PrestamoId " class="btn btn-outline-warning bi bi-pencil-square"></a>
 							</td>
+
 							<td class="text-center">
-								<a href="/Prestamos/Edit/" class="btn btn-outline-warning  bi bi-pencil-square"></a>
-							</td>
-							<td class="text-center">
-								<a href="/Prestamos/Delete/" class="btn btn-outline-danger bi bi-trash"></a>
+								<a href="/Prestamos/Delete/@prestamo.PrestamoId " class="btn btn-outline-danger bi bi-trash"></a>
 							</td>
 						</tr>
 					}
