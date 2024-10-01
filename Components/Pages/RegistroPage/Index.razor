@@ -1,19 +1,18 @@
 ﻿@page "/Registro/Index"
 @rendermode InteractiveServer
-@inject RegistroService registroService
+@inject PrestamoService prestamoService
 @inject NavigationManager navigation
 
 
-<PageTitle>Registro</PageTitle>
-  <div class=container> 
-	  <div class="card shadow-lg">
+<PageTitle>Lista de Prestamos</PageTitle>
+  <div class="container card shadow-lg"> 
 		<div class="card-header bg-success text-white text-center">
-			<h4><strong>Registro</strong></h4>
+			<h3><strong>Lista de Prestamos</strong></h3>
 	  </div>
 	  <div class="card-body">
 
 			<div class="col-md-3 d-flex align-items-end justify-content-md-start mt-3 mt-md-0">
-				<a href="/Registro/Create" class="btn btn-secondary bi bi-plus-square-fill"> Crear</a>
+				<a href="/Prestamos/Create" class="btn btn-secondary bi bi-plus-square-fill"> Crear</a>
 			</div>
 		</div>
 
@@ -21,8 +20,11 @@
 		<table class="table table-light table-bordered">
 			<thead class="table table-striped text-center table-bordered mt-3 bg-success text-white">
 				<tr>  
-					
-					<th>Ver</th>
+					<th>Prestamo ID</th>
+					<th>Concepto</th>
+					<th>Deudor</th>
+					<th>Monto</th>
+					<th>Ver</th>  
 					<th>Editar</th> 
 					<th>Eliminar</th>
 				</tr>
@@ -30,10 +32,17 @@
 
 			<tbody>
 
-					@foreach (var Registro in registro )  
+					@foreach (var prestamo in prestamos )  
 					{
 
 						<tr>
+
+
+							<td class="text-center">@prestamo.PrestamoId</td>
+							<td class="text-center">@prestamo.Concepto</td>
+							<td class="text-center">@prestamo.deudor</td>
+							<td class="text-center">@prestamo.monto</td>
+
 							@*Iconos y botones*@
 							<td class="text-center">
 								<a href="/Registro/Details/" class="btn btn-outline-info  bi bi-eye"></a>
@@ -50,7 +59,7 @@
 			</table>
 		</div>
 	</div>
-</div>
+
 
 
 
@@ -61,7 +70,7 @@
 
 @code {
 
-	public List<Registro> registro = new List<Registro>();
+	public List<Prestamos> prestamos = new List<Prestamos>();
 
 
 
