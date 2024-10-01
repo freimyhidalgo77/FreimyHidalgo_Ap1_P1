@@ -4,70 +4,72 @@
 @inject NavigationManager navigation
 
 <PageTitle>Crear Prestamo</PageTitle>
- <EditForm Model="prestamos" OnValidSubmit="Crear">
+<EditForm Model="prestamos" OnValidSubmit="Crear">
 
-	 <div class="container">   
-		 <div class="card shadow-lg">
-			 <div class="card-header bg-success text-white text-center">
-				 <h3><strong>Crear nuevo prestamo</strong></h3>
-			 </div>
+	<div class="container">
+		<div class="card shadow-lg">
+			<div class="card-header bg-success text-white text-center">
+				<h3><strong>Crear nuevo prestamo</strong></h3>
+			</div>
 			 
-			 <div class="card-body">
+			<div class="card-body">
 
-				 <label class="form-label" for="id"><strong>Prestamo ID</strong></label>
-				 <InputNumber for="id" class="from-control" @bind-Value="prestamos.PrestamoId" readonly></InputNumber>
+				<label class="form-label" for="id"><strong>Prestamo ID</strong></label>
+				<InputNumber id="id" class="form-control" @bind-Value="prestamos.PrestamoId" readonly></InputNumber>
 
 				<label class="form-label" for="concepto"><strong>Concepto</strong></label>
-				<InputText for="id" class="from-control" @bind-Value="prestamos.Concepto"></InputText>
-				<ValidationMessage For="@(()=>prestamos.Concepto)"></ValidationMessage>
+				<InputText id="concepto" class="form-control" @bind-Value="prestamos.Concepto"></InputText>
+				<ValidationMessage For="@(() => prestamos.Concepto)"></ValidationMessage>
 
 				<label class="form-label" for="deudor"><strong>Deudor</strong></label>
-				<InputText for="deudor" class="from-control" @bind-Value="prestamos.deudor"></InputText>
-				<ValidationMessage For="@(()=>prestamos.deudor)"></ValidationMessage>
+				<InputText id="deudor" class="form-control" @bind-Value="prestamos.deudor"></InputText>
+				<ValidationMessage For="@(() => prestamos.deudor)"></ValidationMessage>
 
-				<label class="form-label" for="deudor"><strong>Monto</strong></label>
-				<InputNumber for="deudor" class="from-control" @bind-Value="prestamos.monto"></InputNumber>
-				<ValidationMessage For="@(()=>prestamos.monto)"></ValidationMessage>
+				<label class="form-label" for="monto"><strong>Monto</strong></label>
+				<InputNumber id="monto" class="form-control" @bind-Value="prestamos.monto"></InputNumber>
+				<ValidationMessage For="@(() => prestamos.monto)"></ValidationMessage>
 
-				<div class="card-footer">
-					<button type="button" class="btn btn-primary bi bi-floppy-fill"> Crear</button>
-					<a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
-				</div>
-			 </div>
+			</div>
 
-		 </div>
-	 </div>
-
- </EditForm>
+			<div class="card-footer">
+				<button type="submit" class="btn btn-primary bi bi-floppy-fill"> Guardar</button>
+				<a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
+			</div>
+		</div>
+	</div>
+</EditForm>
 
 @code {
 
 	public Prestamos prestamos { get; set; } = new Prestamos();
 	public List<Prestamos> prestamosList { get; set; } = new List<Prestamos>();
 
-
 	protected override async Task OnInitializedAsync()
 	{
 		prestamosList = await prestamoService.Listar(p => true);
 	}
 
-	public async Task<bool> Validar()
-	{
-		var existe = await prestamoService.Buscar(prestamos.PrestamoId);
-		return existe == null;
-	}
-
 	public async Task Crear()
 	{
-		if(await Validar())
+		
+		if (await Validar())
 		{
-			await prestamoService.Guardar(prestamos);
-			prestamos = new Prestamos();
-
+			bool result = await prestamoService.Guardar(prestamos);
+			if (result)
+			{
+				
+				prestamos = new Prestamos();
+				navigation.NavigateTo("/Prestamos/Index"); 
+			}
 		}
 	}
 
-
-
+	public async Task<bool> Validar()
+	{
+		
+		var existe = await prestamoService.Buscar(prestamos.PrestamoId);
+		return existe == null;
+	}
 }
+
    
