@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
+#nullable disable  
 
 namespace FreimyHidalgo_Ap1_P1.Migrations
 {
@@ -16,17 +16,29 @@ namespace FreimyHidalgo_Ap1_P1.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
-            modelBuilder.Entity("FreimyHidalgo_Ap1_P1.Models.Registro", b =>
+            modelBuilder.Entity("FreimyHidalgo_Ap1_P1.Models.Prestamos", b =>
                 {
-                    b.Property<string>("name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("id")
+                    b.Property<int>("PrestamoId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("name");
+                    b.Property<string>("Concepto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("Regitro");
+                    b.Property<decimal>("Interes")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("deudor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("monto")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PrestamoId");
+
+                    b.ToTable("Prestamos");
                 });
 #pragma warning restore 612, 618
         }
