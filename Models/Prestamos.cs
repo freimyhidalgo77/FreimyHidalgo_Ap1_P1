@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace FreimyHidalgo_Ap1_P1.Models
 
 {
-	public class Prestamos 
+	public class Prestamos  
 	{
 
 		[Key]
