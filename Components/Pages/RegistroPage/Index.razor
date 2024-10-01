@@ -43,7 +43,8 @@
 					<th>Prestamo ID</th>
 					<th>Concepto</th>
 					<th>Deudor</th>
-					<th>Monto</th> 
+					<th>Ver</th>
+					<th>Monto</th>   
 					<th>Editar</th> 
 					<th>Eliminar</th>
 				</tr>
@@ -60,6 +61,10 @@
 							<td class="text-center">@prestamo.Concepto</td>
 							<td class="text-center">@prestamo.deudor</td>
 							<td class="text-center">@prestamo.monto</td>
+
+							<td class="text-center">
+								<a href="/Prestamos/Details/@prestamo.PrestamoId " class="btn btn-outline-info bi bi-eye-fill"></a>
+							</td>
 
 							<td class="text-center">
 								<a href="/Prestamos/Edit/@prestamo.PrestamoId " class="btn btn-outline-warning bi bi-pencil-square"></a>
