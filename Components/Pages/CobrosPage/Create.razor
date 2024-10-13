@@ -16,7 +16,7 @@
             </div>
 
             <div class="card-body">
-                <label class="form-label" for="CobroId"><strong>CobroID</strong></label>
+                <label class="form-label" for="CobroId"><strong>Cobro ID</strong></label>
                 <InputNumber id="CobroId" class="form-control" @bind-Value="cobros.CobroId" readonly></InputNumber>
 
                 <label class="form-label" for="Deudor"><strong>Deudor</strong></label>
@@ -56,19 +56,11 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label" for="DetalleId"><strong>Detalle ID</strong></label>
-                        <InputNumber id="DetalleId" class="form-control" @bind-Value="cobroDetalle.DetalleId"></InputNumber>
+                        <label class="form-label" for="PrestamoIdId"><strong>Prestamo ID</strong></label>
+                        <InputNumber id="DetalleId" class="form-control" @bind-Value="prestamos.PrestamoId" readonly></InputNumber>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label" for="CobroId"><strong>Cobro ID</strong></label>
-                        <InputNumber id="CobroId" class="form-control" @bind-Value="cobroDetalle.CobroId"></InputNumber>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label" for="prestamoId"><strong>Prestamo ID</strong></label>
-                        <InputNumber id="prestamoId" class="form-control" @bind-Value="prestamos.PrestamoId"></InputNumber>
-                    </div>
+                  
 
                     <div class="col-md-6">
                         <label class="form-label" for="valorCobrado"><strong>Valor Cobrado</strong></label>
@@ -82,8 +74,7 @@
                     <table class="table table-light table-bordered">
                         <thead class="table table-striped text-center table-bordered mt-3">
                             <tr>
-                                <th>Detalle ID</th>
-                                <th>Cobro ID</th>
+                                
                                 <th>Prestamo ID</th>
                                 <th>Valor Cobrado</th>
                                 <th>Eliminar</th>
@@ -94,9 +85,8 @@
                             @foreach (var detalle in cobroDetallesList)
                             {
                                 <tr>
-                                    <td class="text-center">@detalle.DetalleId</td>
+                                  
                                     <td class="text-center">@detalle.PrestamoId</td>
-                                    <td class="text-center">@detalle.CobroId</td>
                                     <td class="text-center">@detalle.valorCobrado</td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-outline-danger bi bi-trash" @onclick="() => EliminarDetalle(detalle)"></button>
@@ -108,7 +98,7 @@
 
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary bi bi-floppy-fill"> Guardar</button>
-                        <a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
+                        <a href="/Cobros/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
                     </div>
                 </div>
             </div>
