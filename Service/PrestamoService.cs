@@ -37,7 +37,7 @@ namespace FreimyHidalgo_Ap1_P1.Service
 		{
 			_context.Prestamos.Update(prestamos);
 			return await _context.SaveChangesAsync() > 0;
-		}
+		} 
 
 		public async Task<bool> Guardar(Prestamos prestamos)
 		{
@@ -60,23 +60,23 @@ namespace FreimyHidalgo_Ap1_P1.Service
 
 		public async Task<List<Prestamos>> Listar(Expression<Func<Prestamos, bool>> criterio)
 		{
-			return  _context.Prestamos.AsNoTracking()
+			return  _context.Prestamos.Include(d =>d.deudor)
 				.Where(criterio)
 				.ToList(); 
 		}
 		 
 		public async Task<Prestamos> Buscar(int id)
 		{
-			return _context.Prestamos.AsNoTracking()
+			return _context.Prestamos.Include(d =>d.deudor)
 				.FirstOrDefault(p => p.PrestamoId == id);
 		}
 
-		public async Task<Prestamos?> ValidarDeudor(string deudor)
+		/*public async Task<Prestamos?> ValidarDeudor(string deudor)
 		{
 			return await _context.Prestamos.AsNoTracking()
 				.FirstOrDefaultAsync(p => p.deudor == deudor);
 
-		} 
+		} */
 
 		public async Task<bool> Validar(int id)
 		{
@@ -84,11 +84,7 @@ namespace FreimyHidalgo_Ap1_P1.Service
 
 		}
 
-		public decimal calcularInteresPrestamo(decimal monto, decimal incentivo )
-		{
-			return ((monto * incentivo / 100) + monto);
-		}
-
+		
 
 
 	}

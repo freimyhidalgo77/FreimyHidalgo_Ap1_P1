@@ -1,0 +1,132 @@
+﻿@page "/Cobros/Details/{CobroId:int}"
+@rendermode InteractiveServer
+@inject NavigationManager navigationManager
+@inject CobroService cobroService
+@inject PrestamoService prestamoService
+
+
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header text-center">
+            <h5 class="card-header">Detalles del Cobro seleccionado</h5>
+        </div>
+        <div class="container">
+            <div class="mb-3 row">
+                <label for="CobroId" class="form-label"><strong>Cobro ID:</strong></label>
+                <div class="col-md-1">
+                    <p class="mb-0">@cobro?.CobroId</p>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="Fecha" class="form-label"><strong>Fecha:</strong></label>
+                <div class="col-md-1">
+                    <p class="mb-0">@cobro?.fecha.ToString("dd/MM/yy")</p>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="Deudor" class="form-label"><strong>Deudor:</strong></label>
+                <div class="col-md-1">
+                    <p class="mb-0">@deudorList.FirstOrDefault(d => d.DeudorId == cobro?.DeudorId)?.nombre</p>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="Monto" class="form-label"><strong>Monto:</strong></label>
+                <div class="col-md-1">
+                    <p class="form-control-plaintext">@cobro?.Monto</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="card shadow-lg mt-3">
+            <div class="card-header text-center">
+                <h5 class="card-header">Detalles del Cobro</h5>
+            </div>
+            <div class="container">
+                <div class="card-body">
+                    <h5>Detalles por Cobro</h5>
+                    @foreach (var cobroDetalle in cobro.CobroDetalles)
+                    {
+                        <div class="mb-3 row">
+                            <label class="col-md-2 text-end col-form-label"><strong>Detalle ID:</strong></label>
+                            <div class="col-md-1">
+                                <p class="form-control-plaintext">@cobroDetalle.DetalleId</p>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-2 text-end col-form-label"><strong>Cobro ID:</strong></label>
+                            <div class="col-md-1">
+                                <p class="form-control-plaintext">@cobroDetalle.CobroId</p>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-2 text-end col-form-label"><strong>Prestamo ID:</strong></label>
+                            <div class="col-md-1">
+                                <p class="form-control-plaintext">@cobroDetalle.PrestamoId</p>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-md-2 text-end col-form-label"><strong>Valor Cobrado:</strong></label>
+                            <div class="col-md-1">
+                                <p class="form-control-plaintext">@cobroDetalle.valorCobrado</p>
+                            </div>
+                        </div>
+                        <hr />
+                    }
+
+                    <h5>Detalles en Tabla</h5>
+                    <table class="table table-light table-bordered">
+                        <thead class="table table-striped text-center">
+                            <tr>
+                                <th>Detalle ID</th>
+                                <th>Cobro ID</th>
+                                <th>Prestamo ID</th>
+                                <th>Valor Cobrado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var detalle in cobro.CobroDetalles)
+                            {
+                                <tr>
+                                    <td>@detalle.DetalleId</td>
+                                    <td>@detalle.CobroId</td>
+                                    <td>@detalle.PrestamoId</td>
+                                    <td>@detalle.valorCobrado</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button type="button" @onclick="Volver" class="btn btn-outline-primary">
+                <span class="bi bi-arrow-left mt-3"></span>
+                Volver
+            </button>
+        </div>
+    </div>
+
+
+
+@code {
+    [Parameter]
+    public int CobroId { get; set; }
+    public Cobros cobro { get; set; } = new Cobros();
+    public List<Deudores> deudorList { get; set; } = new List<Deudores>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cobro = await cobroService.Buscar(CobroId);
+        deudorList = await cobroService.ListarDeudor();
+    }
+
+    public async Task Volver()
+    {
+        navigationManager.NavigateTo("/Cobros/Index");
+    }
+}

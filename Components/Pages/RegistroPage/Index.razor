@@ -1,18 +1,20 @@
 ﻿@page "/Prestamos/Index"
 @rendermode InteractiveServer
+@inject DeudoresService deudorService
 @inject PrestamoService prestamoService
+@inject CobroService cobroService
 @inject NavigationManager navigation
 
 
-<PageTitle>Lista de Prestamos</PageTitle>
+<PageTitle>Registro de Prestamos</PageTitle>
   <div class="container card shadow-lg"> 
-		<div class="card-header bg-success text-white text-center">
-			<h3><strong>Lista de Prestamos</strong></h3>
+		<div class="card-header text-center">
+			<h5><strong>Lista de Prestamos</strong></h5>
 	  </div>
 	  <div class="card-body">
 
 			<div class="col-md-3 d-flex align-items-end justify-content-md-start mt-3 mt-md-0">
-				<a href="/Prestamos/Create" class="btn btn-secondary bi bi-plus-square-fill"> Crear</a>
+			<a href="/Prestamos/Create" class="btn btn-primary bi bi-plus-circle-fill"> Crear</a>
 			</div>
 		</div>
 
@@ -38,13 +40,14 @@
 
 		  <div class="card-body">
 		<table class="table table-light table-bordered">
-			<thead class="table table-striped text-center table-bordered mt-3 bg-success text-white">
+			<thead class="table table-striped text-center table-bordered mt-3">
 				<tr>  
 					<th>Prestamo ID</th>
 					<th>Concepto</th>
 					<th>Deudor</th>
-					<th>Ver</th>
-					<th>Monto</th>   
+					<th>Monto</th>
+					<th>Balance</th>
+					<th>Ver</th>   
 					<th>Editar</th> 
 					<th>Eliminar</th>
 				</tr>
@@ -54,13 +57,16 @@
 
 					@foreach (var prestamo in prestamos )  
 					{
-						 
+						var deudor = deudores.FirstOrDefault(d => d.DeudorId == prestamo.DeudorId);
 						<tr>
-
+							
 							<td class="text-center">@prestamo.PrestamoId</td>
-							<td class="text-center">@prestamo.Concepto</td>
-							<td class="text-center">@prestamo.deudor</td>
-							<td class="text-center">@prestamo.monto</td>
+							<td class="text-center">@prestamo.Concepto </td>
+							<td class="text-center">@prestamo.deudor.nombre</td>
+							<td class="text-center">@prestamo.monto $</td>
+							<td class="text-center">@prestamo.balance $</td>
+
+
 
 							<td class="text-center">
 								<a href="/Prestamos/Details/@prestamo.PrestamoId " class="btn btn-outline-info bi bi-eye-fill"></a>
@@ -88,7 +94,8 @@
 @code {
 
 	public List<Prestamos> prestamos = new List<Prestamos>();
-	public List<PrestamoService> prestamosService = new List<PrestamoService>();
+	public List<Cobros> cobros { get; set; } = new List<Cobros>();
+	public List<Deudores> deudores { get; set; } = new List<Deudores>();
 	public string filtro = "id";
 	public string valorFiltro = "";
 
@@ -114,11 +121,7 @@
 				{
 				prestamos = await prestamoService.Listar(v => v.Concepto.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase));
 			}
-			else if (filtro == "Deudor")
-				{
-				prestamos = await prestamoService.Listar(v => v.deudor.Contains(valorFiltro, StringComparison.OrdinalIgnoreCase));
-			}
-			
+		
 		}
 
 	}
