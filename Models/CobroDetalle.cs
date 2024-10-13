@@ -9,7 +9,7 @@ namespace FreimyHidalgo_Ap1_P1.Models
 		[Key]
 
 		public int DetalleId { get; set; }
-
+		 
 		public int CobroId { get; set; }
 		[ForeignKey("CobroId")]
 
