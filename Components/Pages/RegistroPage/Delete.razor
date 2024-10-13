@@ -14,13 +14,16 @@
         <div class="card-body">
             <h6><strong>Estás seguro que deseas eliminar este prestamo?</strong></h6>
             <div class="mb-1">
-                <p class="mb-0"> Prestamo ID: @prestamos.PrestamoId</p>
+                <p class="mb-0"> Prestamo ID: @prestamos.PrestamoId</p>    
             </div>
             <div class="mb-1">
                 <p class="mb-0">Concepto: @prestamos.Concepto</p>
             </div>
             <div class="mb-1">
-                <p class="mb-0">Deudor: @prestamos.deudor</p>
+                <p class="mb-0">Deudor: @prestamos.deudor.nombre</p>
+            </div>
+            <div class="mb-1">
+                <p class="mb-0">Deudo: @prestamos.balance</p>
             </div>
 
             <div class="card-footer">
