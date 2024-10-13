@@ -11,10 +11,12 @@ builder.Services.AddRazorComponents()
 
 //Inyeccion de la DB
 var ConStr = builder.Configuration.GetConnectionString("ConStr");
-builder.Services.AddDbContext<Context>(c => c.UseSqlite(ConStr));
+builder.Services.AddDbContext<Context>(c => c.UseSqlite(ConStr)); 
 
 //Inyeccion del service
 builder.Services.AddScoped<PrestamoService>();
+builder.Services.AddScoped<DeudoresService>();
+builder.Services.AddScoped<CobroService>();
 
 var app = builder.Build();
 
