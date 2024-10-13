@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
-
+             
 namespace FreimyHidalgo_Ap1_P1.Migrations
 {
     [DbContext(typeof(Context))]
