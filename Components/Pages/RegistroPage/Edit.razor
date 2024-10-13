@@ -1,5 +1,6 @@
 ﻿@page "/Prestamos/Edit/{PrestamoId:int}"
 @rendermode InteractiveServer
+@inject DeudoresService deudoresService
 @inject PrestamoService prestamoService
 @inject NavigationManager navigation
 
@@ -14,30 +15,42 @@
 			</div>
 
 			<div class="card-body">
-
+			
 				<label class="form-label" for="id"><strong>Prestamo ID</strong></label>
 				<InputNumber id="id" class="form-control" @bind-Value="prestamos.PrestamoId" readonly></InputNumber>
+
+	
+				<label class="form-label" for="Deudor"><strong>Deudor</strong></label>
+					<InputSelect id="Deudor" class="form-control" @bind-Value="prestamos.DeudorId">
+						<option value="0" selected disabled>Elija una Opci&oacute;n</option>
+						@foreach (var deudor in deudores)
+						{
+							<option value="@deudor.DeudorId">@deudor.nombre</option>
+						}
+					</InputSelect>
+					<ValidationMessage For="(() => prestamos.deudor)" />
 
 				<label class="form-label" for="concepto"><strong>Concepto</strong></label>
 				<InputText id="concepto" class="form-control" @bind-Value="prestamos.Concepto"></InputText>
 				<ValidationMessage For="@(() => prestamos.Concepto)"></ValidationMessage>
 
-				<label class="form-label" for="deudor"><strong>Deudor</strong></label>
-				<InputText id="deudor" class="form-control" @bind-Value="prestamos.deudor"></InputText>
-				<ValidationMessage For="@(() => prestamos.deudor)"></ValidationMessage>
-
 				<label class="form-label" for="monto"><strong>Monto</strong></label>
 				<InputNumber id="monto" class="form-control" @bind-Value="prestamos.monto"></InputNumber>
 				<ValidationMessage For="@(() => prestamos.monto)"></ValidationMessage>
 
-			</div>
+				
+				<label class="form-label" for="monto"><strong>Balance</strong></label>
+				<InputNumber id="balance" class="form-control" @bind-Value="prestamos.balance"></InputNumber>
+				<ValidationMessage For="@(()=>prestamos.balance)"></ValidationMessage>
 
-			<div class="card-footer">
-				<button type="submit" class="btn btn-primary bi bi-floppy-fill"> Guardar</button>
-				<a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
+				<div class="card-footer">
+					<button type="submit" class="btn btn-success bi bi-floppy-fill"> Guardar</button>
+					<a href="/Prestamos/Index" class="btn btn-info bi bi-arrow-90deg-left"> Volver</a>
+				</div>
+
 			</div>
 		</div>
-	</div>
+	</div>		
 </EditForm>
 
 
@@ -45,6 +58,7 @@
 
 	[Parameter]
 	public int PrestamoId { get; set; }
+	public List<Deudores> deudores { get; set; } = new List<Deudores>();
 	public Prestamos prestamos { get; set; } = new Prestamos();
 	public List<Prestamos> prestamosList { get; set; } = new List<Prestamos>();
 	public bool Repetido;
@@ -57,7 +71,7 @@
 			prestamos = await prestamoService.Buscar(PrestamoId);
 
 		}
-		prestamosList = await prestamoService.Listar(prestamos => true);
+		deudores = await deudoresService.ObtenerEntidadAsync();
 	}
 
 
@@ -75,6 +89,7 @@
 		{
 			await prestamoService.Guardar(prestamos);
 			prestamos = new Prestamos();
+			navigation.NavigateTo("/prestamos/Index");
 
 		}
 	}
