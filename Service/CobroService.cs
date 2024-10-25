@@ -60,7 +60,7 @@ namespace FreimyHidalgo_Ap1_P1.Service
             return false;
         }
 
-        public async Task<Cobros?> Buscar(int id)
+       public async Task<Cobros?> Buscar(int id)
         {
             return await _context.Cobros
                 .Include(c => c.CobroDetalles)
@@ -68,6 +68,7 @@ namespace FreimyHidalgo_Ap1_P1.Service
                 .FirstOrDefaultAsync(c => c.CobroId == id);
         }
 
+      
 
         public async Task<List<Deudores>> ListarDeudor()
         {
@@ -78,10 +79,10 @@ namespace FreimyHidalgo_Ap1_P1.Service
 
         public async Task<Prestamos> ObtenerDeudor(int deudorId)
         {
-            // Obtén el préstamo relacionado con el deudor específico
+          
             var prestamo = await _context.Prestamos
-                .Include(p => p.deudor) // Asegúrate de incluir la relación de deudor
-                .FirstOrDefaultAsync(p => p.DeudorId == deudorId); // Filtro por DeudorId
+                .Include(p => p.deudor) 
+                .FirstOrDefaultAsync(p => p.DeudorId == deudorId); 
 
             return prestamo;
         }
