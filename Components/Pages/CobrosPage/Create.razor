@@ -116,6 +116,8 @@
     protected override async Task OnInitializedAsync()
     {
         deudores = await deudoresService.ObtenerEntidadAsync();
+        cobros.fecha = DateTime.Now;
+
     }
 
     public async Task Crear()
