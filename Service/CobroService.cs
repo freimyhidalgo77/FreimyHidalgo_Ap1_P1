@@ -19,7 +19,7 @@ namespace FreimyHidalgo_Ap1_P1.Service
 
         public async Task<bool> Existe(int id)
         {
-            return await _context.Prestamos.AnyAsync();
+            return await _context.Cobros.AnyAsync(c => c.CobroId == id);
         }
 
         public async Task<bool> Insertar(Cobros cobros)
@@ -38,9 +38,16 @@ namespace FreimyHidalgo_Ap1_P1.Service
         {
             if (!await Existe(cobros.CobroId))
                 return await Insertar(cobros);
-            return await Modificar(cobros);
 
+            _context.Entry(cobros).State = EntityState.Modified;
+            foreach (var detalle in cobros.CobroDetalles)
+            {
+                _context.Entry(detalle).State = detalle.DetalleId == 0 ?
+                    EntityState.Added : EntityState.Modified;
+            }
+            return await _context.SaveChangesAsync() > 0;
         }
+
 
         public async Task<bool> Eliminar(int id)
         {
@@ -56,11 +63,11 @@ namespace FreimyHidalgo_Ap1_P1.Service
         public async Task<Cobros?> Buscar(int id)
         {
             return await _context.Cobros
-                .Include(c => c.Deudores)
                 .Include(c => c.CobroDetalles)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.CobroId == id);
         }
+
 
         public async Task<List<Deudores>> ListarDeudor()
         {
