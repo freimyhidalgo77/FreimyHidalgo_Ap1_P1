@@ -23,6 +23,13 @@ namespace FreimyHidalgo_Ap1_P1.Service
 		}
 
 
+        public async Task<Deudores> Buscar(int deudorId)
+        {
+            return await _context.Deudores
+                .AsNoTracking()
+                .FirstOrDefaultAsync(d => d.DeudorId == deudorId);
+        }
 
-	}
+
+    }
 }
