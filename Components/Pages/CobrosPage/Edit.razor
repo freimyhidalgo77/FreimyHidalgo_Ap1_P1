@@ -16,11 +16,11 @@
             </div>
 
             <div class="card-body">
-                <label class="form-label" for="CobroId"><strong>CobroID</strong></label>
+                <label class="form-label" for="CobroId"><strong>Cobro ID</strong></label>
                 <InputNumber id="CobroId" class="form-control" @bind-Value="cobros.CobroId" readonly></InputNumber>
 
                 <label class="form-label" for="Deudor"><strong>Deudor</strong></label>
-                <InputSelect id="Deudor" @onchange="SeleccionarDedudor" class="form-control" @bind-Value="cobros.DeudorId">
+                <InputSelect id="Deudor" @bind-Value="cobros.DeudorId" class="form-control">
                     <option value="0" selected disabled>Elija una Opci&oacute;n</option>
                     @foreach (var deudor in deudores)
                     {
@@ -35,7 +35,7 @@
 
                 <label class="form-label" for="monto"><strong>Monto</strong></label>
                 <InputNumber id="monto" class="form-control" @bind-Value="cobros.Monto"></InputNumber>
-                <ValidationMessage For="@(() => cobros.Monto)"></ValidationMessage>
+                <ValidationMessage For="@(()=> cobros.Monto )"></ValidationMessage>
             </div>
         </div>
     </div>
@@ -56,19 +56,11 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="form-label" for="DetalleId"><strong>Detalle ID</strong></label>
-                        <InputNumber id="DetalleId" class="form-control" @bind-Value="cobroDetalle.DetalleId"></InputNumber>
+                        <label class="form-label" for="PrestamoIdId"><strong>Prestamo ID</strong></label>
+                        <InputNumber id="DetalleId" class="form-control" @bind-Value="prestamos.PrestamoId" readonly></InputNumber>
                     </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label" for="CobroId"><strong>Cobro ID</strong></label>
-                        <InputNumber id="CobroId" class="form-control" @bind-Value="cobroDetalle.CobroId"></InputNumber>
-                    </div>
 
-                    <div class="col-md-6">
-                        <label class="form-label" for="prestamoId"><strong>Prestamo ID</strong></label>
-                        <InputNumber id="prestamoId" class="form-control" @bind-Value="prestamos.PrestamoId"></InputNumber>
-                    </div>
 
                     <div class="col-md-6">
                         <label class="form-label" for="valorCobrado"><strong>Valor Cobrado</strong></label>
@@ -82,8 +74,7 @@
                     <table class="table table-light table-bordered">
                         <thead class="table table-striped text-center table-bordered mt-3">
                             <tr>
-                                <th>Detalle ID</th>
-                                <th>Cobro ID</th>
+
                                 <th>Prestamo ID</th>
                                 <th>Valor Cobrado</th>
                                 <th>Eliminar</th>
@@ -94,9 +85,8 @@
                             @foreach (var detalle in cobroDetallesList)
                             {
                                 <tr>
-                                    <td class="text-center">@detalle.DetalleId</td>
+
                                     <td class="text-center">@detalle.PrestamoId</td>
-                                    <td class="text-center">@detalle.CobroId</td>
                                     <td class="text-center">@detalle.valorCobrado</td>
                                     <td class="text-center">
                                         <button type="button" class="btn btn-outline-danger bi bi-trash" @onclick="() => EliminarDetalle(detalle)"></button>
@@ -125,8 +115,11 @@
     public Prestamos prestamos { get; set; } = new Prestamos();
     public List<CobroDetalle> cobroDetallesList { get; set; } = new List<CobroDetalle>();
     public List<Deudores> deudores { get; set; } = new List<Deudores>();
+    public Deudores Deudores { get; set; } = new Deudores();
+    public List<Prestamos> prestamosList { get; set; } = new List<Prestamos>();
+    public string Mensaje { get; set; } = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+   /* protected override async Task OnInitializedAsync()
     {
         deudores = await deudoresService.ObtenerEntidadAsync();
         cobros = await cobroService.Buscar(CobroId) ?? new Cobros();
@@ -135,17 +128,43 @@
         {
             cobroDetallesList = cobros.CobroDetalles.ToList();
         }
+    }*/
+    protected override async Task OnInitializedAsync()
+    {
+        deudores = await deudoresService.ObtenerEntidadAsync(); 
+
+        cobros = await cobroService.Buscar(CobroId) ?? new Cobros();
+
+        if (cobros.DeudorId > 0)
+        {
+            Deudores = await deudoresService.Buscar(cobros.DeudorId) ?? new Deudores();
+        }
+
+        cobros.fecha = DateTime.Now;
+
+        if (cobros.DeudorId > 0)
+        {
+            prestamosList = await prestamoService.Listar(p => p.DeudorId == cobros.DeudorId);
+        }
     }
+
+
 
     public async Task ModificarDetalle()
     {
-        var detalleExiste = cobroDetallesList.FirstOrDefault(d => d.DetalleId == cobroDetalle.DetalleId);
-        if (detalleExiste != null)
+        cobros.CobroDetalles = cobroDetallesList;
+        var update = await cobroService.Guardar(cobros);
+        if (update)
         {
-            detalleExiste.PrestamoId = cobroDetalle.PrestamoId;
-            detalleExiste.valorCobrado = cobroDetalle.valorCobrado;
+            navigation.NavigateTo("/Cobros/Index");
+        }
+        else
+        {
+            Mensaje = "No se ha creado correctamente";
         }
     }
+
+
 
     public void Agregar()
     {
